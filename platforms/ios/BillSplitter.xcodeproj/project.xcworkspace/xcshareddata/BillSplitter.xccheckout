@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7C4ECA52-309F-42FB-B76F-ACFD88A8D968</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BillSplitter</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BD139CB1-572F-4B6B-AC9C-77B21AA03589</key>
+		<string>https://github.com/bhchua2011/YOLO-IDP.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/BillSplitter.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BD139CB1-572F-4B6B-AC9C-77B21AA03589</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/bhchua2011/YOLO-IDP.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BD139CB1-572F-4B6B-AC9C-77B21AA03589</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BD139CB1-572F-4B6B-AC9C-77B21AA03589</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YOLO-IDP GitHub</string>
+		</dict>
+	</array>
+</dict>
+</plist>
