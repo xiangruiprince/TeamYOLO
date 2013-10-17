@@ -1,0 +1,11 @@
+<div id="snap-photo">
+	<audio autoplay>
+		<source src="./audio/Camera Shutter.mp3"  type="audio/mpeg"/>
+	</audio>
+	<script>
+		d = new Date();
+		$('#testimage').attr("src", "./img/camera-loop.gif?" + d.getTime());
+	</script>
+	
+	<img src="#" width="100%" height="100%" id="testimage"/>
+</div>

@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>5A6C859D-73F8-4325-81C6-49A265BEBFE3</string>
+	<string>6A5DE3CA-F3A6-4510-9958-5B77BF3A0B90</string>
 	<key>IDESourceControlProjectName</key>
 	<string>BillSplitter</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>EF50B985-81CC-4056-9379-B5AB8AA1548D</key>
+		<key>EE6ACDF7-6829-48B0-B759-F12EB1E33649</key>
 		<string>https://github.com/xiangruiprince/TeamYOLO.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>platforms/ios/BillSplitter.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>EF50B985-81CC-4056-9379-B5AB8AA1548D</key>
+		<key>EE6ACDF7-6829-48B0-B759-F12EB1E33649</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>EF50B985-81CC-4056-9379-B5AB8AA1548D</string>
+	<string>EE6ACDF7-6829-48B0-B759-F12EB1E33649</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>EF50B985-81CC-4056-9379-B5AB8AA1548D</string>
+			<string>EE6ACDF7-6829-48B0-B759-F12EB1E33649</string>
 			<key>IDESourceControlWCCName</key>
 			<string>TeamYOLO</string>
 		</dict>

@@ -2,9 +2,9 @@
 <widget id="com.phonegap.billsplitter" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>BillSplitter</name>
     <description>
-        The ultimate bill-splitting app!
+        The easiest way to split a bill!
     </description>
-    <author email="teamyolo@gmail.com" href="https://wiki.smu.edu.sg/is306/2013-14_Term_1_G2_TeamYOLO">
+    <author email="" href="https://wiki.smu.edu.sg/is306/2013-14_Term_1_G2_TeamYOLO">
         Team YOLO
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
@@ -12,7 +12,7 @@
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
-    <preference name="webviewbounce" value="true" />
+    <preference name="webviewbounce" value="false" />
     <preference name="prerendered-icon" value="true" />
     <preference name="stay-in-webview" value="false" />
     <preference name="ios-statusbarstyle" value="black-translucent" />
@@ -32,11 +32,8 @@
     <icon gap:platform="blackberry" gap:state="hover" src="res/icon/blackberry/icon-80.png" />
     <icon gap:platform="ios" height="57" src="res/icon/ios/icon-57.png" width="57" />
     <icon gap:platform="ios" height="72" src="res/icon/ios/icon-72.png" width="72" />
-    <icon gap:platform="ios" height="76" src="res/icon/ios/icon-76.png" width="76" />
     <icon gap:platform="ios" height="114" src="res/icon/ios/icon-57-2x.png" width="114" />
-    <icon gap:platform="ios" height="120" src="res/icon/ios/icon-60-2x.png" width="120" />
     <icon gap:platform="ios" height="144" src="res/icon/ios/icon-72-2x.png" width="144" />
-    <icon gap:platform="ios" height="152" src="res/icon/ios/icon-76-2x.png" width="152" />
     <icon gap:platform="webos" src="res/icon/webos/icon-64.png" />
     <icon gap:platform="winphone" src="res/icon/windows-phone/icon-48.png" />
     <icon gap:platform="winphone" gap:role="background" src="res/icon/windows-phone/icon-173.png" />
@@ -51,4 +48,5 @@
     <gap:splash gap:platform="ios" height="768" src="res/screen/ios/screen-ipad-landscape.png" width="1024" />
     <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
     <access origin="http://127.0.0.1*" />
+    <content src="index.html" />
 </widget>
