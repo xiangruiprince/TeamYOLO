@@ -1,7 +1,9 @@
 <div class="navbar center">
   <div class="navbar-inner ">
-	  <img src="img/back.png" class="back-button" id="backto-homepage" onclick="">
-	<div class="header"> SPLIT BILL </div>
+	  <img src="img/back.png" class="back-button clickable-pointer" id="backto-homepage" onclick="">
+	<div class="header">SPLIT UNEVENLY</div>
+		<img src="img/home.png" class="home-button clickable-pointer">
+		<img src="img/help.png" class="help-button clickable-pointer" onclick="" data-toggle="modal">
   </div>
 </div>
 
@@ -10,15 +12,15 @@
 		<div class="face-box" id="face-box-1">
 			<div class="name">YOU</div><br/>
 			<div class='singleface'>
-				<img src="img/face-1.png" class="face" id="cartoonface-1">
+				<img src="img/face-1.png" class="face clickable-pointer" id="cartoonface-1">
 			</div>
 			<div class="single-pot-container">
-				$<span id="remaining-pot-1"></span>
+				<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><span id="remaining-pot-1"></span>
 			</div>
 		</div>
 	</div>
 	<center>
-		<div class="split-amount">
+		<div class="split-amount clickable-pointer">
 			<span id="split-status">SPLIT THE REST</span>
 		</div>
 	</center>

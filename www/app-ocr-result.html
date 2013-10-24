@@ -1,7 +1,9 @@
 <div class="navbar center">
   <div class="navbar-inner ">
-  	<img src="./img/back.png" class="back-button" id="backto-billinputchoice" onclick="">
+  	<img src="./img/back.png" class="back-button clickable-pointer" id="backto-billinputchoice" onclick="">
 	<div class="header"> OCR RESULT </div>
+		<img src="img/home.png" class="home-button clickable-pointer">
+		<img src="img/help.png" class="help-button clickable-pointer" onclick="" data-toggle="modal">
   </div>
 </div>
 
@@ -20,7 +22,7 @@
 		</div>
 
 		<div class="ocr-each-bill-item-price">
-			$<input type="text" class="textfield-bill-items" id="ocr-bill-item-price-1" value="6.95">
+			<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><input type="text" class="textfield-bill-items" id="ocr-bill-item-price-1" value="6.95">
 		</div>
 	</div>
 	<!-- END OF FIRST BILL ITEM -->
@@ -32,7 +34,7 @@
 		</div>
 
 		<div class="ocr-each-bill-item-price">
-			$<input type="text" class="textfield-bill-items" value="11.95" id="ocr-bill-item-price-2">
+			<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><input type="text" class="textfield-bill-items" value="11.95" id="ocr-bill-item-price-2">
 		</div>
 	</div>
 	<!-- END OF SECOND BILL ITEM -->
@@ -44,7 +46,7 @@
 		</div>
 
 		<div class="ocr-each-bill-item-price">
-			$<input type="text" class="textfield-bill-items" value="37.95" id="ocr-bill-item-price-3">
+			<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><input type="text" class="textfield-bill-items" value="37.95" id="ocr-bill-item-price-3">
 		</div>
 	</div>
 	<!-- END OF THIRD BILL ITEM -->
@@ -57,7 +59,7 @@
 		</div>
 
 		<div class="ocr-final-price">
-			$<input type="text" class="textfield-final-prices" value="56.85" id="ocr-subtotal">
+			<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><input type="text" class="textfield-final-prices" value="56.85" id="ocr-subtotal">
 		</div>
 	</div>
 	<!-- END OF SUBTOTAL -->
@@ -70,7 +72,7 @@
 		</div>
 
 		<div class="ocr-final-price">
-			$<input type="text" class="textfield-final-prices" value="66.51" id="ocr-total">
+			<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><input type="text" class="textfield-final-prices" value="66.51" id="ocr-total">
 		</div>
 	</div>
 	<!-- END OF TOTAL -->
@@ -84,8 +86,8 @@
 
 	<!-- JIETING'S VERSION-->
 	<div class="ocr-final-button-container">
-		<img src="./img/retake-button.png" class="retake-option" id="goto-photo-snap" onclick="">
-		<img src="./img/use-button.png" class="use-option" id="goto-splitting-choice" onclick="">
+		<img src="./img/retake-button.png" class="retake-option clickable-pointer" id="goto-photo-snap" onclick="">
+		<img src="./img/use-button.png" class="use-option clickable-pointer" id="goto-splitting-choice" onclick="">
 	</div>
 
 	<div class="clearfix"></div>

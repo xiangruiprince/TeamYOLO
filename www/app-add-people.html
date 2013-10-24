@@ -1,12 +1,12 @@
 <!-- NAV BAR -->
 <div class="navbar center">
   <div class="navbar-inner ">
-	<img src="img/back.png" class="back-button" id="backto-homepage" onclick="">
+	<img src="img/back.png" class="back-button clickable-pointer" id="backto-homepage" onclick="">
 	<div class="header"> ADD PEOPLE </div>
-	<img src="img/help.png" class="help-button" onclick="" data-toggle="modal">
+		<img src="img/home.png" class="home-button clickable-pointer">
+		<img src="img/help.png" class="help-button clickable-pointer" onclick="" data-toggle="modal">
   </div>
 </div>
-
 <!-- MAIN BODY CONTAINER -->
 <div class="container-fluid bs-container">
 	<div class="face-container">
@@ -16,7 +16,7 @@
 				<img src="img/face-1.png" class="face" id="cartoonface-1">
 			</div>
 			<div class="single-pot-container">
-				$<span id="remaining-pot-1">3.00</span>
+				<span class="currency-symbol">$</span><span id="remaining-pot-1">3.00</span>
 			</div>
 		</div>
 		<!--
@@ -34,9 +34,9 @@
 <div class="container-fluid bs-bottom-container">
 	<div class="bs-bottom-header"> HOW MANY PEOPLE?</div>
 	<div class="addpeople-counter"> 2 </div>
-	<div id="add-people-plus-button"> + </div>
-	<div id="add-people-minus-button"> - </div>
-	<div id="goto-add-initial" onclick="" class="next"> NEXT</div>
+	<div id="add-people-plus-button" class="clickable-pointer"> + </div>
+	<div id="add-people-minus-button" class="clickable-pointer"> - </div>
+	<div id="goto-add-initial" onclick="" class="next clickable-pointer"> NEXT</div>
 </div>
 
 

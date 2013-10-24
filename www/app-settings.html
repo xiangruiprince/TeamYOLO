@@ -1,8 +1,10 @@
 <!-- START OF HEADER -->
 <div class="navbar center">
   <div class="navbar-inner ">
-	  <img src="img/back.png" class="back-button" id="backto-homepage" onclick="">
+	  <img src="img/back.png" class="back-button clickable-pointer" id="backto-homepage" onclick="">
 	<div class="header"> SETTINGS </div>
+		<img src="img/home.png" class="home-button clickable-pointer">
+		<img src="img/help.png" class="help-button clickable-pointer" onclick="" data-toggle="modal">
   </div>
 </div>
 <!-- END OF HEADER -->
@@ -16,19 +18,19 @@
 		<div class="current-currency"></div>
 		<div class="current-currency-name"></div>
 	</div>
-	<div class="each-currency-container" id="aud-currency" onclick="changeCurr(this)">
-		<img src="./img/australian-dollar.png" class="currency"/>
+	<div class="each-currency-container clickable-pointer" id="uk-currency" onclick="changeCurr(this)">
+		<img src="./img/uk-dollar.png" class="currency"/>
 	</div>
-	<div class="each-currency-container" id="euro-currency" onclick="changeCurr(this)">
+	<div class="each-currency-container clickable-pointer" id="euro-currency" onclick="changeCurr(this)">
 		<img src="./img/euro-dollar.png" class="currency"/>
 	</div>
-	<div class="each-currency-container" id="jpy-currency" onclick="changeCurr(this)">
+	<!--<div class="each-currency-container" id="jpy-currency" onclick="changeCurr(this)">
 		<img src="./img/japanese-yen.png" class="currency"/>
-	</div>
-	<div class="each-currency-container" id="sgd-currency" onclick="changeCurr(this)">
+	</div> -->
+	<div class="each-currency-container clickable-pointer" id="sgd-currency" onclick="changeCurr(this)">
 		<img src="./img/singapore-dollar.png" class="currency"/>
 	</div>
-	<div class="each-currency-container" id="usd-currency" onclick="changeCurr(this)">
+	<div class="each-currency-container clickable-pointer" id="usd-currency" onclick="changeCurr(this)">
 		<img src="./img/united-states-dollar.png" class="currency"/>
 	</div>
 </div>
