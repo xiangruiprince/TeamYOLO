@@ -28,6 +28,7 @@ var peopleItemsIndexArr;
 var peoplePaidArr;
 var peoplePricesArr;
 var peoplePricesPotArr;
+var peoplePaidArrForPreviousBills;
 
 var person1ItemsArr;
 var person2ItemsArr;
@@ -88,6 +89,7 @@ $(document).ready(function() {
 // FUNCTIONAL BUTTONS
 // -------------------
 
+
 // Adding People (+)
 $(document).on('click touchstart', '#add-people-plus-button', function (e){
 	
@@ -109,7 +111,7 @@ $(document).on('click touchstart', '#add-people-plus-button', function (e){
 					+ "<img src='img/face-3.png' class='face' id='cartoonface-" + count + "'>"
 				+ "</div>"
 				+ "<div class='single-pot-container'>"
-					+ "<span class='currency-symbol'>" + currencySymbol + "</span><span id='remaining-pot-" + count + "'></span>"
+					+ "<span class='currency-symbol-split-unevenly'>" + currencySymbol + "</span><span id='remaining-pot-" + count + "'></span>"
 				+ "</div>"
 			+ "</div>"
 		);
@@ -208,8 +210,6 @@ $(document).delegate('#next-bill-item', 'click' ,function(){
 
 		// Next placeholder item number
 		var nextItemNumber = itemsArr.length + 2;
-
-
 		//$('#enter-bill-item-field').val('Item ' + nextItemNumber);
 
 		$('#remaining-pot').text(newRemainingPot.toFixed(2));
@@ -219,16 +219,18 @@ $(document).delegate('#next-bill-item', 'click' ,function(){
 		$('.enter-bill-item-list').append (
 			"<div class='billitem-each-bill-item-container' id='billitem-each-bill-item-container-'" + (itemsArr.length) + "'>"
 				+ "<div class='billitem-each-bill-item-title' id='billitem-each-bill-item-title-'" +  (itemsArr.length) + "'>"
-					+ (itemsArr.length) + ". " + itemsArr[itemsArr.length -1]
+					+ (itemsArr.length) + ". "
+					+ "<input type='text' class='textfield-manual-bill-items-titles' maxlength='10' id='textfield-manual-bill-items-titles-" + (itemsArr.length) +"' value='" + itemsArr[itemsArr.length -1] +"'>"
 					+ "</div>"
 
 					+ "<div class='billitem-each-bill-item-price'>"
-					+ "<span class='currency-symbol'>" + currencySymbol + "</span><input type='text' class='textfield-bill-items' id='textfield-bill-items-'" + (pricesArr.length) +"' value='" + pricesArr[pricesArr.length -1] +"'>"
+					+ "<span class='currency-symbol-add-bill-item'>" + currencySymbol + "</span><input type='text' class='textfield-manual-bill-items' id='textfield-manual-bill-items-" + (pricesArr.length) +"' value='" + pricesArr[pricesArr.length -1] +"'>"
+					//+ "<span class='billitem-each-bill-item-close'><img src='img/close-icon.png' id='delete-item-" + (itemsArr.length) + "' onclick='deleteManualBillItem("+ (itemsArr.length) +")'/></span>"
 					//+ "<span class='currency-symbol'>" + currencySymbol + "</span><input type='text' class='textfield-bill-items' id='textfield-bill-items-'" + (pricesArr.length) +"' placeholder='0.00'>"
 				+ "</div>"
 			+ "</div>"
 		);
-		
+
 		if(newRemainingPot == 0) {
 			showDoneButton();
 		}
@@ -242,9 +244,86 @@ $(document).delegate('#next-bill-item', 'click' ,function(){
 	} // end else
 });
 
+// ------------------------------------------------
+// LOGIC TO TALLY MANUAL BILL ITEMS AFTER EDITING
+// ------------------------------------------------
+$(document).delegate('.textfield-manual-bill-items', 'change' ,function(){
+	// var numberOfItemsSoFar = $('div.billitem-each-bill-item-container').length;
+	// update ItemPricesArr
+	var id = $(this).attr('id');
+	var toRemove = 'textfield-manual-bill-items-';
+	var editedItemListNum = id.replace(toRemove,'');
+	//alert(editedItemListNum);
+	var editedBillPrice = $(this).val();
+	
+	// Keep track of current Bill Price
+	var currentBillPrice = pricesArr[Number(editedItemListNum) - 1]
+	//alert(currentBillPrice);
+
+	// Update the POT!
+	var oldRemainingPot = Number($('#remaining-pot').text());
+	//alert(oldRemainingPot);
+	var newRemainingPot = oldRemainingPot + Number(currentBillPrice) - Number(editedBillPrice);
+	//alert(newRemainingPot);
+
+	var validEditedBillPrice = false;
+	if ((Number(editedBillPrice) >= 0) == false){
+		alert("Sorry, you need to enter a proper amount!");
+		$(this).val(currentBillPrice);
+	} else {
+		validEditedBillPrice = true;
+	}
+
+	// Check if POT is DONE or not
+	if(newRemainingPot == 0 && validEditedBillPrice) {
+		pricesArr[Number(editedItemListNum)] = Number(editedBillPrice);
+		$('#remaining-pot').text(newRemainingPot.toFixed(2));
+		showDoneButton();
+	} else if (newRemainingPot < 0 && validEditedBillPrice){
+		alert("Sorry, this item has exceeded the bill!");
+		$(this).val(currentBillPrice);
+	} else if (validEditedBillPrice){
+		pricesArr[Number(editedItemListNum) - 1] = Number(editedBillPrice);
+		$('#remaining-pot').text(newRemainingPot.toFixed(2));
+		showNextButton();
+	}
+
+});
+
+$(document).delegate('.textfield-manual-bill-items-titles', 'change' ,function(){
+	// var numberOfItemsSoFar = $('div.billitem-each-bill-item-container').length;
+	// update ItemPricesArr
+	var id = $(this).attr('id');
+	var toRemove = 'textfield-manual-bill-items-titles-';
+	var editedItemListNum = id.replace(toRemove,'');
+	//alert(editedItemListNum);
+	var editedBillItemName = $(this).val();
+	
+	// Keep track of current Bill Price
+	var currentBillName = itemsArr[Number(editedItemListNum) - 1]
+	//alert(currentBillPrice);
+
+	var validEditedBillItemName = false;
+	if ((editedBillItemName.length >= 0) == false){
+		alert("Sorry, you need to enter a name!");
+		$(this).val(currentBillName);
+	} else {
+		validEditedBillItemName = true;
+		itemsArr[Number(editedItemListNum) - 1] = editedBillItemName;
+	}
+
+});
+
+
+
 function showDoneButton() {
 	$('#goto-splitting-choice-no-ocr').css("display", "inline-block");
 	$('#next-bill-item').css("display", "none");
+}
+
+function showNextButton() {
+	$('#goto-splitting-choice-no-ocr').css("display", "none");
+	$('#next-bill-item').css("display", "inline-block");
 }
 
 
@@ -626,11 +705,11 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
 
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "'>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ ocrEachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -643,11 +722,11 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 						$('.summary-main-container').append(
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "' checked>"
+									+ "<input type='checkbox' class='css-checkbox'  onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked='checked' />"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ ocrEachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -657,6 +736,12 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 						); // end append
 					} // end else (paid)
 				}; // end for
+				
+				try {
+					ocrTotalPrice = ocrTotalPrice.toFixed(2);
+				} catch (err) {
+
+				}
 
 				$('.summary-main-container').append(
 					"<div class='summary-total-container'>"
@@ -744,11 +829,11 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
 
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "'>"
+									+ "<input type='checkbox' class='css-checkbox'  onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "'>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -761,11 +846,11 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 						$('.summary-main-container').append(
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "' checked>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked='checked' />"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -776,6 +861,13 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 					} // end else (paid)
 				}; // end for
 
+				try {
+					grandTotal = grandTotal.toFixed(2);
+				} catch (err) {
+
+				}
+
+
 				$('.summary-main-container').append(
 					"<div class='summary-total-container'>"
 						+ "<div class='summary-each-diner-checkbox'>"
@@ -783,7 +875,7 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 						+ "<div class='summary-clickable-detailed-summary'>"
 							+ "<div class='summary-each-diner-name'>TOTAL"
 							+ "</div>"
-							+ "<div class='summary-each-diner-total-price'><span class='currency-symbol'>" + currencySymbol + "</span>"+ grandTotal.toFixed(2) + "</div>"
+							+ "<div class='summary-each-diner-total-price'><span class='currency-symbol'>" + currencySymbol + "</span>"+ grandTotal + "</div>"
 						+ "</div>" // end of summary-clickable-detailed-summary
 						+ "<div class='summary-each-diner-email'></div>"
 						+ "<div class='summary-each-diner-sms'></div>"
@@ -841,7 +933,7 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 				grandTotal = ocrTotalPrice;
 			} else {
 				//grandTotal = parseInt(g_subtotal) + parseInt(g_taxes);	
-				grandTotal = parseFloat(g_subtotal) + parseFloat(g_taxes);
+				grandTotal = (parseFloat(g_subtotal) + parseFloat(g_taxes)).toFixed(2);
 			}
 			
 
@@ -878,11 +970,11 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 						"<div class='summary-each-diner-container' id='person-detailed-summary-" + (i+1) + "'>"
 							+ "<div class='summary-each-diner-checkbox'>"
 
-								+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "'>"
+								+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 							+ "</div>"
 							+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-									+ peopleNamesArr[i]
+									+ peopleNamesArr[i].toUpperCase()
 								+ "</div>"
 								+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 							+ "</div>" // end of summary-clickable-detailed-summary
@@ -895,11 +987,11 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 					$('.summary-main-container').append(
 						"<div class='summary-each-diner-container' id='person-detailed-summary-" + (i+1) + "'>"
 							+ "<div class='summary-each-diner-checkbox'>"
-								+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked>"
+								+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked='checked' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 							+ "</div>"
 							+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-									+ peopleNamesArr[i]
+									+ peopleNamesArr[i].toUpperCase()
 								+ "</div>"
 								+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 							+ "</div>" // end of summary-clickable-detailed-summary
@@ -999,7 +1091,7 @@ function showDetailedSummary(personNumber) {
 		
 		$('.detailed-summary-main-container').before(
 			"<div class='detailed-summary-face-name-container'>"
-				+ "<img src='img/face-1.png' class='detailed-summary-face' />" + retrievedPersonName
+				+ "<img src='img/face-1.png' class='detailed-summary-face' />" + retrievedPersonName.toUpperCase()
 			+ "</div>"
 		);
 
@@ -1147,10 +1239,14 @@ function showDetailedSummary(personNumber) {
 
 // XIANG, CODE HERE PLEAAAZE
 
-$(document).delegate('.home-button', 'click', function(){
-	$('.non-js-wrapper').load('app-homepage.html');
-	restart();
-	$('.single-pot-container').hide();
+$(document).delegate('.home-button', 'click touchstart', function(){
+	if (confirm('Restart and go back home?')) {
+		$('.non-js-wrapper').load('app-homepage.html');
+		restart();
+		$('.single-pot-container').hide();
+	} else {
+	    // Do nothing!
+	}
 })
 
 
@@ -1191,6 +1287,9 @@ $(document).delegate('#backto-billinputchoice', 'click' ,function(){
 		$('.bs-bottom-container').load('app-billinputchoice.html');
 		$('#backto-homepage').attr('id', 'backto-add-initial');
 		$('.header').text('INPUT CHOICE');
+
+		// Change Body CSS to White
+		$("body").css('background-color', '#0AB7B2');
 	});
 	loadedPage = "billinputchoice";
 	$('#backto-billinputchoice').attr('id', 'backto-add-initial');
@@ -1333,11 +1432,11 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
 
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "'>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ ocrEachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -1350,11 +1449,11 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 						$('.summary-main-container').append(
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "' checked>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked='checked' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ ocrEachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -1365,6 +1464,13 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 					} // end else (paid)
 				}; // end for
 
+				try {
+					ocrTotalPrice = ocrTotalPrice.toFixed(2);
+				} catch (err) {
+
+				}
+
+
 				$('.summary-main-container').append(
 					"<div class='summary-total-container'>"
 						+ "<div class='summary-each-diner-checkbox'>"
@@ -1372,7 +1478,7 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 						+ "<div class='summary-clickable-detailed-summary'>"
 							+ "<div class='summary-each-diner-name'>TOTAL"
 							+ "</div>"
-							+ "<div class='summary-each-diner-total-price'><span class='currency-symbol'>" + currencySymbol + "</span>"+ ocrTotalPrice.toFixed(2) + "</div>"
+							+ "<div class='summary-each-diner-total-price'><span class='currency-symbol'>" + currencySymbol + "</span>"+ ocrTotalPrice + "</div>"
 						+ "</div>" // end of summary-clickable-detailed-summary
 						+ "<div class='summary-each-diner-email'></div>"
 						+ "<div class='summary-each-diner-sms'></div>"
@@ -1435,11 +1541,11 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
 
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "'>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -1452,11 +1558,11 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 						$('.summary-main-container').append(
 							"<div class='summary-each-diner-container' id='person-detailed-summary-'" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-'" + (i+1) + "' checked>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked='checked' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-'" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -1467,6 +1573,13 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 					} // end else (paid)
 				}; // end for
 
+				try {
+					grandTotal = grandTotal.toFixed(2);
+				} catch (err) {
+
+				}
+
+
 				$('.summary-main-container').append(
 					"<div class='summary-total-container'>"
 						+ "<div class='summary-each-diner-checkbox'>"
@@ -1474,7 +1587,7 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 						+ "<div class='summary-clickable-detailed-summary'>"
 							+ "<div class='summary-each-diner-name'>TOTAL"
 							+ "</div>"
-							+ "<div class='summary-each-diner-total-price'><span class='currency-symbol'>" + currencySymbol + "</span>"+ grandTotal.toFixed(2) + "</div>"
+							+ "<div class='summary-each-diner-total-price'><span class='currency-symbol'>" + currencySymbol + "</span>"+ grandTotal + "</div>"
 						+ "</div>" // end of summary-clickable-detailed-summary
 						+ "<div class='summary-each-diner-email'></div>"
 						+ "<div class='summary-each-diner-sms'></div>"
@@ -1565,11 +1678,11 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 							"<div class='summary-each-diner-container' id='person-detailed-summary-" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
 
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "'>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -1582,11 +1695,11 @@ $(document).delegate('#backto-summary', 'click touchstart' ,function(){
 						$('.summary-main-container').append(
 							"<div class='summary-each-diner-container' id='person-detailed-summary-" + (i+1) + "'>"
 								+ "<div class='summary-each-diner-checkbox'>"
-									+ "<input type='checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked>"
+									+ "<input type='checkbox' class='css-checkbox' onclick='togglePaidStatus(" + i + ")' id='person-checkbox-" + (i+1) + "' checked='checked' /><label for='person-checkbox-" + (i+1) +"' class='css-label'></label>"
 								+ "</div>"
 								+ "<div class='summary-clickable-detailed-summary' onclick='showDetailedSummary(" + i + ")' id='person-detailed-summary-" + (i+1) + "'>"
 									+ "<div class='summary-each-diner-name' id='person-name-" + (i+1) + "'>"
-										+ peopleNamesArr[i]
+										+ peopleNamesArr[i].toUpperCase()
 									+ "</div>"
 									+ "<div class='summary-each-diner-total-price' id='person-total-price-"+ (i+1) + "'><span class='currency-symbol'>" + currencySymbol + "</span>"+ eachPersonTotalPrice.toFixed(2) + "</div>"
 								+ "</div>" // end of summary-clickable-detailed-summary
@@ -1744,12 +1857,6 @@ $(document).delegate('#ocr-total', 'change' ,function(){
 
 
 
-
-
-
-
-
-
 //--From Splitting Choice Type (Unevenly or Evenly) -> Split Unevenly Page
 $(document).delegate('#goto-split-unevenly', 'click' ,function(){
 	$('.non-js-wrapper').load('app-split-unevenly.html', function(){
@@ -1844,7 +1951,7 @@ $(document).delegate("div[class^='face-box']", 'click touchstart' ,function(){
 	    }	    
 	}
 
-	if (loadedPage == "split-unevenly" && facesAreWiggling == false){
+	if (loadedPage == "split-unevenly" && facesAreWiggling == false && anItemWasSelected == false){
 		var id = $(this).attr('id');
 		//alert($(this).attr('id'));
 		var toRemove = 'face-box-';
@@ -1878,7 +1985,7 @@ $(document).delegate('#backto-splitting-choice', 'click' ,function(){
 });
 
 
-$(document).delegate("#assignToSelectedPeople", 'click touchstart' ,function(){
+$(document).delegate("#assignToSelectedPeople", 'click' ,function(){
 	
 	var containers = $("div[id^='face-box-']");
 	//alert(containers.length);
@@ -1916,7 +2023,7 @@ $(document).delegate("#assignToSelectedPeople", 'click touchstart' ,function(){
 });
 
 
-$(document).delegate("#split-status", 'click touchstart' ,function(){
+$(document).delegate("#split-status", 'click' ,function(){
 	splitTheRest();
 
 	if (remainingItemsArr.length == 0){
@@ -1965,6 +2072,7 @@ function assignItem(listOfWiggles){
 
 		// UPDATE THE SINGLE PERSON'S TOTAL POT
 		var newTotal = 0;
+
 		for(var j=0; j < currentPersonPrices.length; j++){
     		newTotal += currentPersonPrices[j]
 		}
@@ -2003,19 +2111,18 @@ function splitTheRest(){
 			selectedItemName = remainingItemsArr[j];
 			selectedItemPrice = remainingPricesArr[j];
 
-
 			var assignedPrice = parseFloat(selectedItemPrice) / totalFaces;
 
 			currentPersonPrices[currentPersonPrices.length] = assignedPrice;
 			currentPersonItems[currentPersonItems.length] = selectedItemName;
-
-			// ** BUGGY!
+			
 			// Assign the Actual Item Index after Split the Rest
-			//currentPersonItemsIndex[currentPersonItemsIndex.length] = something;
-			
-			
-
-			// Check position in ItemArr
+			for (var n = 0; n < remainingItemsArr.length; n++) {
+				var sharingIndex = remainingItemsIndex[n];
+				if (numberOfSharesForItemsArr[sharingIndex - 1] == 0 && currentPersonItemsIndex.indexOf(sharingIndex) == -1){
+					currentPersonItemsIndex[currentPersonItemsIndex.length] = sharingIndex;
+				}
+			}
 		}
 		
 		// Update new pot
@@ -2033,7 +2140,11 @@ function splitTheRest(){
 	
 	for (var m = 0; m < remainingItemsArr.length; m++) {
 		var sharingIndex = remainingItemsIndex[m];
-		numberOfSharesForItemsArr[sharingIndex - 1] = totalFaces;
+		if (numberOfSharesForItemsArr[sharingIndex - 1] == 0){
+			numberOfSharesForItemsArr[sharingIndex - 1] = totalFaces;	
+		}
+	}
+		
 
 		/*
 		remainingItemsIndex.splice(indexToSplice, 1);
@@ -2043,7 +2154,6 @@ function splitTheRest(){
 		var targetToRemove = $('#split-unevenly-each-bill-item-container-' + selectedItemIndex);
 		targetToRemove.hide('slow', function(){ targetToRemove.remove(); });
 		*/
-	}
 	
 	// REMOVE REMAINING FROM TABLE
 	remainingItemsIndex = new Array();
@@ -2066,6 +2176,9 @@ function splitTheRest(){
 //--From Detailed Summary == BACK TO == Split Unevenly
 $(document).delegate('#backto-split-unevenly-unfinished', 'click' ,function(){
 	$('.non-js-wrapper').load('app-split-unevenly.html', function(){
+		// Change Body CSS to default color
+		$("body").css('background-color', '#0AB7B2');
+
 		loadFaces();
 		loadItems();
 		$('.single-pot-container').show();
@@ -2077,6 +2190,23 @@ $(document).delegate('#backto-split-unevenly-unfinished', 'click' ,function(){
 	    } else {
 	    	$('#split-status').text("SPLIT THE REST");
 	    }
+
+	    // UPDATE EVERYONE'S SINGLE TOTAL POT
+		
+		for(var i=0; i < totalFaces; i++){
+			var newTotal = 0;
+			var currentPersonPrices = peoplePricesArr[i];
+			for(var j=0; j < currentPersonPrices.length; j++){
+    			newTotal += currentPersonPrices[j]
+			}
+			peoplePricesPotArr[i] = newTotal.toFixed(2);
+			updateSinglePot(newTotal.toFixed(2), (i+1));
+		}
+		
+		// Repopulate Remaining Items!
+		// numberOfSharesForItemsArr[i] == 0
+		
+		
 	});
 	loadedPage = "split-unevenly";
 });
@@ -2116,6 +2246,10 @@ function showDetailedSummaryUnfinished(personNumber) {
 	//$(document).delegate("div[id^='person-detailed-summary-']", 'click touchstart' ,function(){
 
 	$('.non-js-wrapper').load('app-detailed-summary-unfinished.html', function(){
+		
+		// Change Body CSS to default color
+		$("body").css('background-color', '#FFFFFF');
+
 		if (hasFinishedSplitting == false){
 			$('#backto-summary').attr('id', 'backto-split-unevenly-unfinished');
 		}
@@ -2133,7 +2267,7 @@ function showDetailedSummaryUnfinished(personNumber) {
 		
 		$('.detailed-summary-main-container').before(
 			"<div class='detailed-summary-face-name-container'>"
-				+ "<img src='img/face-1.png' class='detailed-summary-face' />" + retrievedPersonName
+				+ "<img src='img/face-1.png' class='detailed-summary-face' id='person-face-number-" + personNumber + "' />" + retrievedPersonName.toUpperCase()
 			+ "</div>"
 		);
 
@@ -2155,11 +2289,11 @@ function showDetailedSummaryUnfinished(personNumber) {
 				var outputItemName = "";
 
 				$('.detailed-summary-main-container').append(
-					"<div class='detailed-summary-each-item-container'>"
+					"<div class='detailed-summary-each-item-container' id='detailed-summary-each-item-container-" + (i+1) +"'>"
 						+ "<div class='detailed-summary-each-bill-item-title'>" + (i+1) + ". " + retrievedPersonItemsArr[i]
 						+ "</div>"
 						+ "<div class='detailed-summary-each-bill-item-price'><span class='currency-symbol'>" + currencySymbol + "</span>" + retrievedPersonPricesArr[i].toFixed(2) + "</div>"
-						+ "<div class='detailed-summary-each-bill-item-close'><img src='img/close-icon.png' id='close-item-" + (i+1) + "' /></div>"
+						+ "<div class='detailed-summary-each-bill-item-close'><img src='img/close-icon.png' id='delete-item-" + (i+1) + "' onclick='deleteItem("+ (i+1) +")'/></div>"
 					+ "</div>"
 				); // end after
 			} else {
@@ -2172,13 +2306,13 @@ function showDetailedSummaryUnfinished(personNumber) {
 				}
 
 				$('.detailed-summary-main-container').append(
-					"<div class='detailed-summary-each-item-container'>"
+					"<div class='detailed-summary-each-item-container' id='detailed-summary-each-item-container-" + (i+1) +"'>"
 						+ "<div class='detailed-summary-each-bill-item-title'>" + (i+1) + ". " + retrievedPersonItemsArr[i]
 							+ "<span class='number-of-sharers'>(1/" + sharers
 							+ ")</span>"
 						+ "</div>"
 						+ "<div class='detailed-summary-each-bill-item-price'><span class='currency-symbol'>" + currencySymbol + "</span>" + retrievedPersonPricesArr[i].toFixed(2) + "</div>"
-						+ "<div class='detailed-summary-each-bill-item-close'><img src='img/close-icon.png' id='close-item-" + (i+1) + "' /></div>"
+						+ "<div class='detailed-summary-each-bill-item-close'><img src='img/close-icon.png' id='delete-item-" + (i+1) + "' onclick='deleteItemShared("+ (i+1) +")' /></div>"
 					+ "</div>"
 				); // end after
 			} // end else
@@ -2187,6 +2321,107 @@ function showDetailedSummaryUnfinished(personNumber) {
 } // end showDetailedSummary
 
 
+function deleteItem(personalItemNumber){
+	if (confirm('Delete this item?')) {
+    	// Delete it!
+		//alert("Deleting personal item...")
+		var id = $(".detailed-summary-face").attr('id');
+		//alert("This is item " + personalItemNumber + " on my list."); // Need to -1 for array use
+		//alert(id);
+		var toRemove = 'person-face-number-';
+		var currentPersonIndexNum = id.replace(toRemove,'');
+		//alert("Current Person Number: " + currentPersonIndexNum);
+
+		var currentPersonPrices = peoplePricesArr[Number(currentPersonIndexNum)];
+		var currentPersonItems = peopleItemsArr[Number(currentPersonIndexNum)];
+		var currentPersonItemsIndex = peopleItemsIndexArr[Number(currentPersonIndexNum)];
+
+		//alert("Current Person Prices: " + currentPersonPrices.join('\n'));
+		//alert("Current Person Items: " + currentPersonItems.join('\n'));
+		//alert("Current Person ItemsIndex: " + currentPersonItemsIndex.join('\n'));
+
+
+		var indexOfItemInItemArr = currentPersonItemsIndex[Number(personalItemNumber)-1] - 1;
+		//alert("IndexOfItemInItemArr is " + indexOfItemInItemArr);
+		//alert("Number of Shares for each Master Item: " + numberOfSharesForItemsArr.join('\n'));
+
+		indexToSplice = personalItemNumber - 1;
+		//alert("Restoring Actual Item " + currentPersonItemsIndex[indexToSplice]);
+		numberOfSharesForItemsArr[Number(currentPersonItemsIndex[indexToSplice]) - 1] = 0;
+
+		currentPersonItems.splice(indexToSplice, 1);
+		currentPersonItemsIndex.splice(indexToSplice, 1);
+		currentPersonPrices.splice(indexToSplice, 1);
+
+		var targetToRemove = $('#detailed-summary-each-item-container-' + personalItemNumber);
+		targetToRemove.hide('slow', function(){ targetToRemove.remove(); });
+		
+	} else {
+	    // Do nothing!
+	}
+}
+
+
+function deleteItemShared(personalItemNumber){
+	if (confirm('This item is shared. Deleting this will remove from all other sharers! Confirm?')) {
+    	// Delete it!
+		//alert("Deleting personal item...")
+		var id = $(".detailed-summary-face").attr('id');
+		//alert("This is item " + personalItemNumber + " on my list."); // Need to -1 for array use
+		//alert(id);
+		var toRemove = 'person-face-number-';
+		var currentPersonIndexNum = id.replace(toRemove,'');
+		//alert("Current Person Number: " + currentPersonIndexNum);
+
+		var currentPersonPrices = peoplePricesArr[Number(currentPersonIndexNum)];
+		var currentPersonItems = peopleItemsArr[Number(currentPersonIndexNum)];
+		var currentPersonItemsIndex = peopleItemsIndexArr[Number(currentPersonIndexNum)];
+
+		//alert("Current Person Prices: " + currentPersonPrices.join('\n'));
+		//alert("Current Person Items: " + currentPersonItems.join('\n'));
+		//alert("Current Person ItemsIndex: " + currentPersonItemsIndex.join('\n'));
+
+		var indexOfItemInItemArr = currentPersonItemsIndex[Number(personalItemNumber)-1] - 1;
+		//alert("IndexOfItemInItemArr is " + indexOfItemInItemArr);
+		//alert("Number of Shares for each Master Item: " + numberOfSharesForItemsArr.join('\n'));
+
+		indexToSplice = personalItemNumber - 1;
+		//alert("Restoring Actual Item " + currentPersonItemsIndex[indexToSplice]);
+
+		//-------------------
+		// HOW TO REMOVE ITEM FROM ALL PEOPLE SHARED?!?!?
+		numberOfSharesForItemsArr[Number(currentPersonItemsIndex[indexToSplice]) - 1] = 0;
+		var targetedItemIndex = indexOfItemInItemArr;
+		for(var i=0; i < totalFaces; i++){
+			//alert("Trying Person " + i);
+			var currentPersonPrices = peoplePricesArr[i];
+			var currentPersonItems = peopleItemsArr[i];
+			var currentPersonItemsIndex = peopleItemsIndexArr[i];
+			
+			//alert("This person's items indexes are: " + currentPersonItemsIndex.join('\n'));
+			for(var j=0; j < currentPersonItemsIndex.length; j++){
+				// Not sure why anItemIndex must - 1....lolx
+    			var anItemIndex = currentPersonItemsIndex[j] - 1;
+    			//alert("Loop " + j);
+    			//alert("CurrentItemIndex is " + anItemIndex);
+    			//alert("TargetedItemIndex is " + targetedItemIndex);
+    			if (anItemIndex == targetedItemIndex){
+    				//alert("Match Found!");
+					currentPersonItems.splice(j, 1);
+					currentPersonItemsIndex.splice(j, 1);
+					currentPersonPrices.splice(j, 1);
+					break;
+    			}
+			}
+		}
+
+		var targetToRemove = $('#detailed-summary-each-item-container-' + personalItemNumber);
+		targetToRemove.hide('slow', function(){ targetToRemove.remove(); });
+	} else {
+	    // Do nothing!
+	}
+
+}
 
 
 
@@ -2222,6 +2457,7 @@ function restart() {
 	peoplePaidArr = new Array();
 	peoplePricesArr = new Array();
 	peoplePricesPotArr = new Array();
+	peoplePaidArrForPreviousBills = new Array();
 
 	person1ItemsArr = new Array();
 	person2ItemsArr = new Array();
@@ -2296,6 +2532,15 @@ function restart() {
 	peoplePaidArr[4] = "unpaid";
 	peoplePaidArr[5] = "unpaid";
 
+	peoplePaidArrForPreviousBills[0] = "paid";
+	peoplePaidArrForPreviousBills[1] = "unpaid";
+	peoplePaidArrForPreviousBills[2] = "paid";
+	peoplePaidArrForPreviousBills[3] = "paid";
+	peoplePaidArrForPreviousBills[4] = "paid";
+	peoplePaidArrForPreviousBills[5] = "paid";
+	peoplePaidArrForPreviousBills[6] = "unpaid";
+
+
 	// Change Body CSS to default color
 	$("body").css('background-color', '#0AB7B2');
 }
@@ -2336,7 +2581,7 @@ function loadFaces(){
 					+ "<img src='img/face-3.png' class='face' id='cartoonface-" + i + "'>"
 				+ "</div>"
 				+ "<div class='single-pot-container'>"
-					+ "<span class='currency-symbol'>" + currencySymbol + "</span><span id='remaining-pot-" + i + "'>" + peoplePricesPotArr[i-1] + "</span>"
+					+ "<span class='currency-symbol-split-unevenly'>" + currencySymbol + "</span><span id='remaining-pot-" + i + "'>" + peoplePricesPotArr[i-1] + "</span>"
 				+ "</div>"
 				+ "</div>"
 			);
@@ -2373,4 +2618,149 @@ function loadItems(){
 		}
 	}
 
-}
+} // end loadItems()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--From HOMEPAGE == GO TO == VIEW PREVIOUS BILLS
+$(document).delegate('#goto-view-previous-bill', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-view-previous-bill.html', function(){
+		// Change Body CSS to White
+		$("body").css('background-color', '#ffffff');
+	});
+});
+
+
+
+//--From VIEW PREVIOUS BILLS == GO TO == PREVIOUS BILL SUMMARY (1)
+$(document).delegate('#goto-previous-bill-summary-1', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-summary-1.html', function(){
+
+	});
+});
+
+//--From VIEW PREVIOUS BILLS == GO TO == PREVIOUS BILL SUMMARY (2)
+$(document).delegate('#goto-previous-bill-summary-2', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-summary-2.html', function(){
+
+	});
+});
+
+
+
+
+//--From PREVIOUS BILL SUMMARY (1) == GO TO == PREVIOUS BILL DETAILED (1)
+$(document).delegate('#goto-previous-bill-detailed-1-1', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-1-1.html', function(){
+
+	});
+});
+
+//--From PREVIOUS BILL SUMMARY (1) == GO TO == PREVIOUS BILL DETAILED (2)
+$(document).delegate('#goto-previous-bill-detailed-1-2', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-1-2.html', function(){
+
+	});
+});
+
+//--From PREVIOUS BILL SUMMARY (1) == GO TO == PREVIOUS BILL DETAILED (3)
+$(document).delegate('#goto-previous-bill-detailed-1-3', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-1-3.html', function(){
+
+	});
+});
+
+
+
+//--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-1)
+$(document).delegate('#goto-previous-bill-detailed-2-1', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-1.html', function(){
+
+	});
+});
+
+//--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-2)
+$(document).delegate('#goto-previous-bill-detailed-2-2', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-2.html', function(){
+
+	});
+});
+
+//--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-3)
+$(document).delegate('#goto-previous-bill-detailed-2-3', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-3.html', function(){
+
+	});
+});
+
+//--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-3)
+$(document).delegate('#goto-previous-bill-detailed-2-4', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-4.html', function(){
+
+	});
+});
+
+
+
+
+
+//--From PREVIOUS BILL SUMMARY (1) == BACKTO == VIEW PREVIOUS BILLS
+$(document).delegate('#backto-view-previous-bill', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-view-previous-bill.html', function(){
+
+	});
+});
+
+//--From DETAILED SUMMARY (1) == BACKTO == PREVIOUS BILL SUMMARY (1)
+$(document).delegate('#backto-previous-bill-summary-1', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-summary-1.html', function(){
+		
+	});
+});
+
+
+//--From DETAILED SUMMARY (2) == BACKTO == PREVIOUS BILL SUMMARY (2)
+$(document).delegate('#backto-previous-bill-summary-2', 'click' ,function(){
+	$('.non-js-wrapper').load('pb-previous-bill-summary-2.html', function(){
+		
+	});
+});
+
+
+
+function togglePaidStatusForPreviousBills(personArrayIndex) {
+	var currentPaymentStatus = peoplePaidArrForPreviousBills[personArrayIndex];
+
+	if(currentPaymentStatus == "unpaid") {
+		peoplePaidArrForPreviousBills[personArrayIndex] = "paid";
+	} else {
+		peoplePaidArrForPreviousBills[personArrayIndex] = "unpaid";
+	} // end else
+} // end togglePaidStatus
+
+
+
+
+
+

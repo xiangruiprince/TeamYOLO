@@ -21,9 +21,9 @@
 <!-- LOWER BODY CONTAINER -->
 <div class="container-fluid bs-bottom-container">
 	<div class="bs-bottom-header">ENTER BILL ITEM</div>
-	<input type="text" id="enter-bill-item-field" placeholder="Item 1"></input>
+	<input type="text" id="enter-bill-item-field" placeholder="Item 1" maxlength='10'></input>
 	<span class="currency-symbol"></span><script>$('.currency-symbol').text(currencySymbol);</script><input type="text" id="enter-bill-price-field" placeholder="0.00" onfocus="this.placeholder = '0.00'" onblur="this.placeholder = '0.00'" ></input>
 
-	<div id="goto-splitting-choice-no-ocr" onclick="" class="next clickable-pointer"> DONE</div>
-	<div id="next-bill-item" onclick="" class="next clickable-pointer"> NEXT</div>
+	<div id="goto-splitting-choice-no-ocr" onclick="" class="one-button-right push-down clickable-pointer"> DONE</div>
+	<div id="next-bill-item" onclick="" class="one-button-right clickable-pointer"> NEXT</div>
 </div>
