@@ -9,6 +9,18 @@
 	*/
 }
 
+.clickable-pointer {
+    cursor: pointer;
+}
+
+/* Overwrite Default Bootstrap CSS */
+.navbar-inner {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* END of Overwrite Default Bootstrap CSS */
+
 .hover_effect {
     -webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
@@ -69,12 +81,26 @@ src: url('../font/proximanova-bold-webfont.ttf'),
 	font-size: 25px;
 }
 
+img[id^="delete-item-"] {
+    width: 15px;
+    height: 15px;
+}
+
 .help-button {
     padding-top: 10px;
     width: 12px;    
     display: inline-block;
     float: right;
 }
+
+.home-button {
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 23px;    
+    display: inline-block;
+    float: right;
+}
+
 
 .help-cross {
     position: fixed;
@@ -136,6 +162,7 @@ src: url('../font/proximanova-bold-webfont.ttf'),
 	font-family: ProximaNova;
 	font-size: 12px;
 	color: #555555;
+    text-transform: uppercase;
 }
 
 #add-people-plus-button{
@@ -166,6 +193,18 @@ src: url('../font/proximanova-bold-webfont.ttf'),
 	font-size: 20px;
 	color: #ffffff;
 }
+
+.one-button-right{
+    background-color: #078783;
+    font-family: ProximaNova;
+    display: inline-block;
+    float: right;
+    padding: 15px 25px 10px 25px;
+    margin-right: 10%;
+    font-size: 20px;
+    color: #ffffff;
+}
+
 /* End of Add People */
 
 /* Enter Initial */
@@ -181,6 +220,7 @@ input.initials{
     height: 25px;
     text-align:center;
     line-height: 25px;
+    text-transform: uppercase;
 
     margin-bottom: 0px;
     padding: 0px 0px;
@@ -220,10 +260,6 @@ input.initials[disabled="true"]{
 	-webkit-animation-timing-function: linear;
 }
 
-.selectabletext {
-
-}
-
 
 @-webkit-keyframes wiggle {
 	0% {
@@ -254,6 +290,7 @@ input.initials[disabled="true"]{
 #subtotal-field, #taxes-field {
     margin-top: 5px;
     margin-left: 5px;
+    width: 75%;
     background-color: #ffffff;  
     color: #999999;
 }
@@ -291,13 +328,23 @@ input.initials[disabled="true"]{
     background-color: #ffffff;
     width: 100%;
     height: 250px;
-    overflow:scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
+
+.billitem-each-bill-item-close {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding-left: 35px;
+}
+
 .remaining-pot-container {
     background-color: #ffffff;
     height: 50px;
     font-family: ProximaNova;
     font-size: 14px;
+    margin-top: 5px;
     text-align: center;
     color: #999999;
 }
@@ -327,7 +374,9 @@ input.initials[disabled="true"]{
 .ocr-confirmphoto-bottom-container {
     background-color: #0ab7b2;
     width: 100%;
-    height: 30%;
+    height: 20%;
+    margin-top: 0px;
+    padding-top: 10px;
     text-align : center;
 }
 
@@ -355,8 +404,6 @@ input.initials[disabled="true"]{
  ******************/
 .ocr-main-container {
     background-color: #ffffff;
-    width: 100%;
-    height: 100%;
 }
 
 .ocr-top-instruction, .currency-top-instruction {
@@ -371,7 +418,7 @@ input.initials[disabled="true"]{
 /*********************
  * OCR EACH BILL ITEM
  *********************/
-.ocr-each-bill-item-container, .billitem-each-bill-item-container, .detailed-summary-each-item-container {
+.ocr-each-bill-item-container, .billitem-each-bill-item-container, .detailed-summary-each-item-container, .detailed-summary-total-container {
     background-color: #168782;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -381,6 +428,30 @@ input.initials[disabled="true"]{
     font-family: ProximaNova;
     font-weight: bold;
     font-size: 18px;
+}
+
+.currency-symbol {
+    color: #ffffff;
+    font-family: ProximaNova;
+    font-weight: none; /* changed to none */
+    font-size: 18px;
+    margin-right: 3px;
+}
+
+.currency-symbol-split-unevenly {
+    color: #999999;
+    font-family: ProximaNova;
+    font-weight: none; /* changed to none */
+    font-size: 14px;
+    text-align: center;
+}
+
+.currency-symbol-add-bill-item {
+    color: #ffffff;
+    font-family: ProximaNova;
+    font-weight: none; /* changed to none */
+    font-size: 20px;
+    text-align: center;
 }
 
 .ocr-each-bill-item-title, .billitem-each-bill-item-title  {
@@ -395,8 +466,8 @@ input.initials[disabled="true"]{
     padding-left: 10px;
 }
 
-.textfield-bill-items, .textfield-final-prices {
-    width: 75%;
+.textfield-bill-items, .textfield-manual-bill-items, .textfield-manual-bill-items-titles, .textfield-final-prices {
+    width: 70%;
 }
 /***********************
  * OCR SUBTOTAL & TOTAL
@@ -429,8 +500,7 @@ input.initials[disabled="true"]{
  *********************/
 
 .ocr-final-button-container {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    text-align: center;
     background-color: #ffffff;
 }
 
@@ -477,8 +547,6 @@ img.resize{
  * SETTINGS
  ***********/
 .settings-main-container{
-    width: 100%;
-    height: 100%;
     background-color: #ffffff;
 }
 
@@ -512,7 +580,7 @@ img.currency{
 /**********************
  * INPUT TEXT BOXES CSS
  **********************/
-input.textfield-bill-items, input.textfield-final-prices {
+input.textfield-bill-items, input.textfield-manual-bill-items, input.textfield-manual-bill-items-titles, input.textfield-final-prices {
     background-color: transparent;
     background-image: url('../img/pencil-icon.png');
     background-position: right;
@@ -520,9 +588,12 @@ input.textfield-bill-items, input.textfield-final-prices {
     color: #ffffff;
     font-family: ProximaNova;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
     border: 0px;
-    line-height: 30px;
+    /*line-height: 30px;*/
+    line-height: 20px;
+    height: 20px;
+    margin-top: 10px;
 }
 
 
@@ -534,9 +605,10 @@ input.textfield-bill-items, input.textfield-final-prices {
     /* Teal Green */
     background-color: #168782;
     width: 100%;
-    height: 134px;
-    overflow:scroll;
-
+    height: 146px;
+    /*overflow:scroll;*/
+    overflow-x: hidden;
+    overflow-y: scroll;
     /*margin-top: 5px;*/
     /*margin-bottom: 5px;*/
     padding-top: 10px;
@@ -603,6 +675,8 @@ input.textfield-bill-items, input.textfield-final-prices {
     font-size: 14px;
     text-align: center;
     color: #999999;
+
+    display: none;
 }
 
 
@@ -638,8 +712,6 @@ input.textfield-bill-items, input.textfield-final-prices {
 
 .summary-main-container, .detailed-summary-main-container {
     background-color: #ffffff;
-    width: 100%;
-    height: 100%;
 }
 
 .summary-each-diner-container, .summary-total-container {
@@ -668,14 +740,19 @@ input.textfield-bill-items, input.textfield-final-prices {
     padding-left: 10px;
 }
 
+.summary-clickable-detailed-summary {
+    width: 50%;
+    display: inline-block;
+    vertical-align: middle;
+}
 .summary-each-diner-name {
-    width: 25%;
+    width: 50%;
     display: inline-block;
     vertical-align: middle;
 }
 
 .summary-each-diner-total-price {
-    width: 25%;
+    width: 45%;
     display: inline-block;
     vertical-align: middle;
 }
@@ -684,18 +761,24 @@ input.textfield-bill-items, input.textfield-final-prices {
     width: 30px;
     display: inline-block;
     color: #168782;
+    margin-left: 10px;
+    padding-right: 10px;
     text-indent: -999999px; /* CSS Trick */
     background: url('../img/email-icon.png') no-repeat;
     vertical-align: middle;
     text-align: center;
+    cursor: pointer;
 }
 
 .summary-each-diner-sms {
-    width: 5%;
+    width: 30px;
     min-width: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: inline-block;
     vertical-align: middle;
     text-align: left;
+    cursor: pointer;
 }
 
 .one-middle-button {
@@ -710,6 +793,7 @@ input.textfield-bill-items, input.textfield-final-prices {
     padding: 15px 10px 10px 10px;
     font-size: 20px;
     color: #ffffff;
+    cursor: pointer;
 }
 
 
@@ -722,8 +806,9 @@ input.textfield-bill-items, input.textfield-final-prices {
  ***********************************/
 
 .detailed-summary-face-name-container {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    background-color: #ffffff;
+    padding-top: 5px;
+    padding-bottom: 5px;
     color: #777777;
     font-family: ProximaNova;
     font-weight: bold;
@@ -734,22 +819,22 @@ input.textfield-bill-items, input.textfield-final-prices {
 
 .detailed-summary-each-bill-item-title  {
     display: inline-block;
-    width: 50%;
+    width: 60%;
     padding-left: 10px;
     font-size: 16px;
 }
 
 .detailed-summary-each-bill-item-price  {
-    width: 25%;
+    width: 15%;
     display: inline-block;
     padding-left: 10px;
 }
 
 .detailed-summary-each-bill-item-close {
     display: inline-block;
-    width: 26px;
-    height: 26px;
-    padding-left: 5px;
+    width: 20px;
+    height: 20px;
+    padding-left: 35px;
 }
 
 .number-of-sharers {
@@ -759,7 +844,73 @@ input.textfield-bill-items, input.textfield-final-prices {
 
 }
 
+.detailed-summary-total-container {
+    background-color: #686868;
+}
+
+
 .non-js-wrapper {
     width: 100%;
     height: 100%;
+}
+
+
+#snap-photo {
+    background: #000000;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.push-down {
+    margin-top: 10px;
+}
+
+.summary-clickable-detailed-summary {
+    cursor: pointer;
+}
+
+
+
+input[type=checkbox].css-checkbox {
+position: absolute; 
+overflow: hidden; 
+clip: rect(0 0 0 0); 
+height:1px; 
+width:1px; 
+margin:-1px; 
+padding:0;
+border:0;
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+    padding-left:20px;
+    height:15px; 
+    display:inline-block;
+    line-height:15px;
+    background-repeat:no-repeat;
+    background-position: 0 0;
+    font-size:15px;
+    vertical-align:middle;
+    cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-label {
+    background-position: 0 -15px;
+}
+
+.css-label{ 
+    background-image:url('../img/lite-orange-check.png'); 
+}
+
+.previous-bill-container {
+    background-color: white;
+}
+
+
+img.each-previous-bill{
+    margin-top: 5px;
+    width: 320px;
+    height: 61px;
 }

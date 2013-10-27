@@ -29,13 +29,15 @@
         <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <title>Bill Splitter</title>
+
+
     </head>
     
     <body>
         <!-- Main App Views -->    
         <div class="non-js-wrapper"></div>
         
-        <!-- MODAL BOX -->
+        <!-- MODAL BOX for HELP-->
         <div class="modal hide" id="myModal">
             <div id="myCarousel" class="carousel slide">
               <ol class="carousel-indicators">
@@ -45,34 +47,80 @@
               <!-- Carousel items -->
               <div class="carousel-inner">
                 <div class="active item">
-                    <div class="help-cross" onclick="">
+                    <div class="help-cross clickable-pointer" onclick="">
                         <img src="img/help-cross.png">
                     </div>
                     <img src="img/help-page-1.png">
                 </div>
                 <div class="item">
-                    <div class="help-cross" onclick="">
+                    <div class="help-cross clickable-pointer" onclick="">
                         <img src="img/help-cross.png">
                     </div>
                     <img src="img/help-page-2.png">
                 </div>
               </div>
               <!-- Carousel nav -->
-              <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-              <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+              <a class="carousel-control left clickable-pointer" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+              <a class="carousel-control right clickable-pointer" href="#myCarousel" data-slide="next">&rsaquo;</a>
             </div>
         </div>
-
     </body>
 
     <!-- Javascript -->
+
     <script type="text/javascript" src="phonegap.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/custom.js"></script>
     <script type="text/javascript" src="js/bootstrap-carousel.js"></script> 
+    <script type="text/javascript" src="js/jquery.preload.js"></script>
     <script type="text/javascript">
         app.initialize();
+    </script>
+
+
+    <script>
+        // ----------------
+        // PRELOADER
+        // ----------------
+        $.preload( '/img/bill-input-option-manual.png',
+          '/img/australian-dollar.png',
+          '/img/back.png',
+          '/img/bill-input-option-ocr.png',
+          '/img/billsplitter-logo.png',
+          '/img/camera-loop.gif',
+          '/img/close-icon.png',
+          '/img/confirmed-photo.png',
+          '/img/email-icon.png',
+          '/img/euro-dollar.png',
+          '/img/face-1.png',
+          '/img/face-2.png',
+          '/img/face-3.png',
+          '/img/fork.png',
+          '/img/glyphicons-halflings-white.png',
+          '/img/glyphicons-halflings.png',
+          '/img/help-cross.png',
+          '/img/help-original.png',
+          '/img/help-page-1.png',
+          '/img/help-page-2.png',
+          '/img/help.png',
+          '/img/home.png',
+          '/img/japanese-yen.png',
+          '/img/logo.png',
+          '/img/pencil-icon.png',
+          '/img/retake-button.png',
+          '/img/settings.png',
+          '/img/singapore-dollar.png',
+          '/img/split-evenly.png',
+          '/img/split-unevenly.png',
+          '/img/spoon.png',
+          '/img/start-splitting.png',
+          '/img/uk-dollar.png',
+          '/img/united-states-dollar.png',
+          '/img/use-button.png',
+          '/img/view-previous-bill.png'
+        );
+
     </script>
 </html>
