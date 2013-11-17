@@ -79,6 +79,11 @@ var hasFinishedSplitting;
 // -----------------
 $(document).ready(function() {
 	
+	// Loading fastclick.js as external js file
+	window.addEventListener('load', function() {
+	  new FastClick(document.body);
+	}, false);
+
 	loadDefaultCurrency();
 	restart();
 	$('.non-js-wrapper').load('app-homepage.html');
@@ -91,7 +96,7 @@ $(document).ready(function() {
 
 
 // Adding People (+)
-$(document).on('click touchstart', '#add-people-plus-button', function (e){
+$(document).on('touchstart', '#add-people-plus-button', function (e){
 	
 	// Increment Number
 	var count = parseInt($('.addpeople-counter').text()) + 1;
@@ -108,7 +113,7 @@ $(document).on('click touchstart', '#add-people-plus-button', function (e){
 				+ "<input type='text' class='initials' value='"+ peopleNamesArr[count-1] +"' maxlength='6' disabled='true' onblur='updateName(" + count + ", this.value)'></input>"
 				+ "<br/>"
 				+ "<div class='singleface'>"
-					+ "<img src='img/face-3.png' class='face' id='cartoonface-" + count + "'>"
+					+ "<img src='img/face-" + count + ".png' class='face' id='cartoonface-" + count + "'>"
 				+ "</div>"
 				+ "<div class='single-pot-container'>"
 					+ "<span class='currency-symbol-split-unevenly'>" + currencySymbol + "</span><span id='remaining-pot-" + count + "'></span>"
@@ -122,7 +127,7 @@ $(document).on('click touchstart', '#add-people-plus-button', function (e){
 
 
 // Adding People (-)
-$(document).on('click touchstart', '#add-people-minus-button', function (e){
+$(document).on('touchstart', '#add-people-minus-button', function (e){
 	var count = parseInt($('.addpeople-counter').text()) - 1;
 	
 	if (count > 1) {
@@ -134,7 +139,7 @@ $(document).on('click touchstart', '#add-people-minus-button', function (e){
 
 
 // tap to dismiss
-$(document).on('click touchstart', function (e){
+$(document).on('touchstart', function (e){
 
 	// Check if it's at add-initial page to dismiss wiggles
 	if (loadedPage == "add-initial"){
@@ -189,7 +194,7 @@ $(document).on('click touchstart', function (e){
 
 
 //Function to populate the list of bill item
-$(document).delegate('#next-bill-item', 'click' ,function(){
+$(document).delegate('#next-bill-item', 'touchstart' ,function(){
 	var billitem = $('#enter-bill-item-field').val();
 	var billprice = $('#enter-bill-price-field').val();
 	
@@ -391,18 +396,18 @@ function storeCurrency(){
 
 
 //tap for help
-$(document).delegate('.help-button', 'click' ,function(){
+$(document).delegate('.help-button', 'touchstart' ,function(){
 	$('#myModal').removeClass( "hide" ).addClass( "show" );
 });
 
 //tap to close help
-$(document).delegate('.help-cross', 'click' ,function(){
+$(document).delegate('.help-cross', 'touchstart' ,function(){
 	$('#myModal').removeClass( "show" ).addClass( "hide" );
 });
 
 
 //--From Homepage -> View Previous Bills
-$(document).delegate('#goto-view-previous-bill', 'click', function(){
+$(document).delegate('#goto-view-previous-bill', 'touchstart', function(){
 	$('non-js-wrapper').load('app-view-previous-bill.html');
 	loadedPage = 'view-previous-bill';
 	
@@ -411,7 +416,7 @@ $(document).delegate('#goto-view-previous-bill', 'click', function(){
 });
 
 //--From Homepage -> Settings
-$(document).delegate('#goto-settings', 'click', function(){
+$(document).delegate('#goto-settings', 'touchstart', function(){
 	$('.non-js-wrapper').load('app-settings.html',function(){
 		storeCurrency();
 	});
@@ -422,7 +427,7 @@ $(document).delegate('#goto-settings', 'click', function(){
 });
 
 //--From Homepage -> Add People
-$(document).delegate('#goto-add-people', 'click' ,function(){
+$(document).delegate('#goto-add-people', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-add-people.html', function(){
 		loadFaces();
 	});
@@ -430,7 +435,7 @@ $(document).delegate('#goto-add-people', 'click' ,function(){
 });
 
 //--From Add People -> Add Initial
-$(document).delegate('#goto-add-initial', 'click' ,function(){
+$(document).delegate('#goto-add-initial', 'touchstart' ,function(){
 	for (var i = 0; i < totalFaces; i++){
 		peoplePricesPotArr[i] = 0.0;	
 	}
@@ -442,7 +447,7 @@ $(document).delegate('#goto-add-initial', 'click' ,function(){
 });
 	
 //-- From Add Initial -> Bill Input Choice
-$(document).delegate('#goto-billinputchoice', 'click' ,function(){
+$(document).delegate('#goto-billinputchoice', 'touchstart' ,function(){
 	$(".singleface", $("div[id^='face-box-']")).removeClass("wiggle");
 	$('.header').text('INPUT OPTIONS');
 	$('.bs-bottom-container').load('app-billinputchoice.html');
@@ -456,7 +461,7 @@ $(document).delegate('#goto-billinputchoice', 'click' ,function(){
 
 
 //--From Bill Input Choice -> Enter Subtotal
-$(document).delegate('#goto-enter-subtotal', 'click' ,function(){
+$(document).delegate('#goto-enter-subtotal', 'touchstart' ,function(){
 	$('.header').text('ENTER SUBTOTAL');
 
 	$('.bs-bottom-container').load('app-enter-subtotal.html', function(){
@@ -474,7 +479,7 @@ $(document).delegate('#goto-enter-subtotal', 'click' ,function(){
 });
 
 //--From Enter Subtotal -> Enter Taxes
-$(document).delegate('#goto-enter-taxes', 'click' ,function(){
+$(document).delegate('#goto-enter-taxes', 'touchstart' ,function(){
 	var subtotal= $('#subtotal-field').val();
 	g_subtotal = subtotal;
 
@@ -505,7 +510,7 @@ $(document).delegate('#goto-enter-taxes', 'click' ,function(){
 }); // 
 
 //--From Enter Taxes -> Enter Bill Item
-$(document).delegate('#goto-enter-bill-item', 'click' ,function(){
+$(document).delegate('#goto-enter-bill-item', 'touchstart' ,function(){
 
 	var taxes = $('#taxes-field').val();
 
@@ -549,7 +554,7 @@ $(document).delegate('#goto-enter-bill-item', 'click' ,function(){
 
 
 //-- From Bill Input Choice -> Snap Photo
-$(document).delegate('#goto-photo-snap', 'click' ,function(){
+$(document).delegate('#goto-photo-snap', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-photo-snap.html');
 	var timer = setTimeout(function(){
 		$('.non-js-wrapper').load('app-photo-confirm.html');
@@ -565,7 +570,7 @@ $(document).delegate('#goto-photo-snap', 'click' ,function(){
 
 
 //--From Confirmed OCR Photo -> OCR Results Page
-$(document).delegate('#goto-ocr-result', 'click' ,function(){
+$(document).delegate('#goto-ocr-result', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-ocr-result.html', function() {
 		g_subtotal = Number($('#ocr-subtotal').val());
 		ocrTotalPrice = Number($('#ocr-total').val());
@@ -589,7 +594,7 @@ $(document).delegate('#goto-ocr-result', 'click' ,function(){
 // START SPLITTING!
 
 //--From OCR Results Page -> Splitting Choice Type (Unevenly or Evenly)
-$(document).delegate('#goto-splitting-choice', 'click' ,function(){
+$(document).delegate('#goto-splitting-choice', 'touchstart' ,function(){
 	// --------------
 	// OCR PORTION
 	// --------------
@@ -640,7 +645,7 @@ $(document).delegate('#goto-splitting-choice', 'click' ,function(){
 
 
 //--From Manual Bill Input Item Page -> Splitting Choice Type (Unevenly or Evenly)
-$(document).delegate('#goto-splitting-choice-no-ocr', 'click' ,function(){
+$(document).delegate('#goto-splitting-choice-no-ocr', 'touchstart' ,function(){
 	usedOCR = false;
 
 	for (var i = 0; i < itemsArr.length; i++){
@@ -659,7 +664,7 @@ $(document).delegate('#goto-splitting-choice-no-ocr', 'click' ,function(){
 
 
 //--From Splitting Choice Type (Unevenly or Evenly) -> Split Evenly - Summary Page
-$(document).delegate('#goto-summary', 'click' ,function(){
+$(document).delegate('#goto-summary', 'touchstart' ,function(){
 // Perform Redirection
 	$('.non-js-wrapper').load('app-summary.html', function(){
 		// -------------------------------
@@ -1066,7 +1071,7 @@ $(document).delegate('#goto-summary', 'click' ,function(){
 
 
 function showDetailedSummary(personNumber) {
-	//$(document).delegate("div[id^='person-detailed-summary-']", 'click touchstart' ,function(){
+	//$(document).delegate("div[id^='person-detailed-summary-']", 'touchstart' ,function(){
 
 	$('.non-js-wrapper').load('app-detailed-summary.html', function(){
 		if (hasFinishedSplitting == false){
@@ -1091,7 +1096,7 @@ function showDetailedSummary(personNumber) {
 		
 		$('.detailed-summary-main-container').before(
 			"<div class='detailed-summary-face-name-container'>"
-				+ "<img src='img/face-1.png' class='detailed-summary-face' />" + retrievedPersonName.toUpperCase()
+				+ "<img src='img/face-" + (personNumber+1) + ".png' class='detailed-summary-face' />" + retrievedPersonName.toUpperCase()
 			+ "</div>"
 		);
 
@@ -1239,7 +1244,7 @@ function showDetailedSummary(personNumber) {
 
 // XIANG, CODE HERE PLEAAAZE
 
-$(document).delegate('.home-button', 'click touchstart', function(){
+$(document).delegate('.home-button', 'touchstart', function(){
 	if (confirm('Restart and go back home?')) {
 		$('.non-js-wrapper').load('app-homepage.html');
 		restart();
@@ -1251,7 +1256,7 @@ $(document).delegate('.home-button', 'click touchstart', function(){
 
 
 //--From Settings == BACK TO == Homepage
-$(document).delegate('#backto-homepage', 'click', function(){
+$(document).delegate('#backto-homepage', 'touchstart', function(){
 	$('.non-js-wrapper').load('app-homepage.html');
 	restart();
 	$('.single-pot-container').hide();
@@ -1261,7 +1266,7 @@ $(document).delegate('#backto-homepage', 'click', function(){
 })
 
 //--From Enter Initial == BACK TO == Add People
-$(document).delegate('#backto-add-people', 'click' ,function(){
+$(document).delegate('#backto-add-people', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-add-people.html', function(){
 		$('.addpeople-counter').html(totalFaces);
 		loadFaces();
@@ -1272,7 +1277,7 @@ $(document).delegate('#backto-add-people', 'click' ,function(){
 });
 
 //--From Bill Input Choice == BACK TO == Enter Initial
-$(document).delegate('#backto-add-initial', 'click' ,function(){
+$(document).delegate('#backto-add-initial', 'touchstart' ,function(){
 	$('.header').text('ENTER INITIALS');
 	$('.bs-bottom-container').load('app-add-initial.html');
 	loadedPage = "add-initial";
@@ -1280,7 +1285,7 @@ $(document).delegate('#backto-add-initial', 'click' ,function(){
 });
 
 //--From Enter Subtotal == BACK TO == Bill Input Choice
-$(document).delegate('#backto-billinputchoice', 'click' ,function(){
+$(document).delegate('#backto-billinputchoice', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-add-people.html', function(){
 		$('.addpeople-counter').html(totalFaces);
 		loadFaces();
@@ -1296,7 +1301,7 @@ $(document).delegate('#backto-billinputchoice', 'click' ,function(){
 });
 
 //--From Enter Taxes == BACK TO == Enter Subtotal
-$(document).delegate('#backto-enter-subtotal', 'click' ,function(){
+$(document).delegate('#backto-enter-subtotal', 'touchstart' ,function(){
 	$('.header').text('ENTER SUBTOTAL');
 	$('.bs-bottom-container').load('app-enter-subtotal.html', function(){
 		$('#subtotal-field').val(g_subtotal);
@@ -1307,7 +1312,7 @@ $(document).delegate('#backto-enter-subtotal', 'click' ,function(){
 });
 
 //--From Enter Bill Item == BACK TO == Enter Taxes
-$(document).delegate('#backto-enter-taxes', 'click' ,function(){
+$(document).delegate('#backto-enter-taxes', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-add-people.html', function(){
 		$('.addpeople-counter').html(totalFaces);
 		loadFaces();
@@ -1321,7 +1326,7 @@ $(document).delegate('#backto-enter-taxes', 'click' ,function(){
 });
 
 //--From Splitting choice == BACK TO == Enter Bill Item
-$(document).delegate('#backto-enter-bill-item', 'click' ,function(){
+$(document).delegate('#backto-enter-bill-item', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-enter-bill-item.html', function(){
 		loadedPage = "enter-bill-item";
 		var newRemainingPot = 0;
@@ -1355,7 +1360,7 @@ $(document).delegate('#backto-enter-bill-item', 'click' ,function(){
 
 
 //--From Summary == BACK TO == Splitting Choice
-$(document).delegate('#back-from-summary', 'click' ,function(){
+$(document).delegate('#back-from-summary', 'touchstart' ,function(){
 
 	//Reset everyone's items, prices and numberOfSharers
 	resetBillAllocation();
@@ -1390,18 +1395,18 @@ $(document).delegate('#back-from-summary', 'click' ,function(){
 
 
 //-- Prompt Email Sent Alert
-$(document).delegate('.summary-each-diner-email', 'click' ,function(){
+$(document).delegate('.summary-each-diner-email', 'touchstart' ,function(){
 	alert('Email Sent!');
 });
 
 //-- Prompt SMS Sent Alert
-$(document).delegate('.summary-each-diner-sms', 'click' ,function(){
+$(document).delegate('.summary-each-diner-sms', 'touchstart' ,function(){
 	alert('SMS Sent!');
 });
 
 
 //--From DETAILED SUMMARY == BACK TO == SUMMARY PAGE
-$(document).delegate('#backto-summary', 'click touchstart' ,function(){
+$(document).delegate('#backto-summary', 'touchstart' ,function(){
 	
 	// Perform Redirection
 	$('.non-js-wrapper').load('app-summary.html', function(){
@@ -1858,7 +1863,7 @@ $(document).delegate('#ocr-total', 'change' ,function(){
 
 
 //--From Splitting Choice Type (Unevenly or Evenly) -> Split Unevenly Page
-$(document).delegate('#goto-split-unevenly', 'click' ,function(){
+$(document).delegate('#goto-split-unevenly', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-split-unevenly.html', function(){
 		loadFaces();
 		loadItems();
@@ -1872,7 +1877,7 @@ $(document).delegate('#goto-split-unevenly', 'click' ,function(){
 
 
 // 'touchstart touchend'
-$(document).delegate("div[id^='split-unevenly-each-bill-item-container-']", 'click touchstart' ,function(){
+$(document).delegate("div[id^='split-unevenly-each-bill-item-container-']", 'touchstart' ,function(){
 	//$("div[class^='face-box-']").removeClass("hover_effect");
 	
 	if (loadedPage == "split-unevenly"){
@@ -1909,7 +1914,7 @@ $(document).delegate("div[id^='split-unevenly-each-bill-item-container-']", 'cli
 
 
 // 'touchstart touchend'
-$(document).delegate("div[class^='face-box']", 'click touchstart' ,function(){
+$(document).delegate("div[class^='face-box']", 'touchstart' ,function(){
 	//$("div[class^='face-box-']").removeClass("hover_effect");
 	
 	if (loadedPage == "add-initial"){
@@ -1968,7 +1973,7 @@ $(document).delegate("div[class^='face-box']", 'click touchstart' ,function(){
 
 
 //--From Manual Bill Input Item Page -> Splitting Choice Type (Unevenly or Evenly)
-$(document).delegate('#backto-splitting-choice', 'click' ,function(){
+$(document).delegate('#backto-splitting-choice', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-splitting-choice.html', function(){
 		loadFaces();
 		$('.single-pot-container').hide();
@@ -1985,7 +1990,7 @@ $(document).delegate('#backto-splitting-choice', 'click' ,function(){
 });
 
 
-$(document).delegate("#assignToSelectedPeople", 'click' ,function(){
+$(document).delegate("#assignToSelectedPeople", 'touchstart' ,function(){
 	
 	var containers = $("div[id^='face-box-']");
 	//alert(containers.length);
@@ -2023,7 +2028,7 @@ $(document).delegate("#assignToSelectedPeople", 'click' ,function(){
 });
 
 
-$(document).delegate("#split-status", 'click' ,function(){
+$(document).delegate("#split-status", 'touchstart' ,function(){
 	splitTheRest();
 
 	if (remainingItemsArr.length == 0){
@@ -2174,7 +2179,7 @@ function splitTheRest(){
 
 
 //--From Detailed Summary == BACK TO == Split Unevenly
-$(document).delegate('#backto-split-unevenly-unfinished', 'click' ,function(){
+$(document).delegate('#backto-split-unevenly-unfinished', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('app-split-unevenly.html', function(){
 		// Change Body CSS to default color
 		$("body").css('background-color', '#0AB7B2');
@@ -2243,7 +2248,7 @@ function resetBillAllocation() {
 
 
 function showDetailedSummaryUnfinished(personNumber) {
-	//$(document).delegate("div[id^='person-detailed-summary-']", 'click touchstart' ,function(){
+	//$(document).delegate("div[id^='person-detailed-summary-']", 'touchstart' ,function(){
 
 	$('.non-js-wrapper').load('app-detailed-summary-unfinished.html', function(){
 		
@@ -2267,7 +2272,7 @@ function showDetailedSummaryUnfinished(personNumber) {
 		
 		$('.detailed-summary-main-container').before(
 			"<div class='detailed-summary-face-name-container'>"
-				+ "<img src='img/face-1.png' class='detailed-summary-face' id='person-face-number-" + personNumber + "' />" + retrievedPersonName.toUpperCase()
+				+ "<img src='img/face-" + (personNumber+1) + ".png' class='detailed-summary-face' id='person-face-number-" + personNumber + "' />" + retrievedPersonName.toUpperCase()
 			+ "</div>"
 		);
 
@@ -2578,7 +2583,7 @@ function loadFaces(){
 				+ "<input type='text' class='initials' value='"+ peopleNamesArr[i-1] +"' maxlength='6' disabled='true' onblur='updateName(" + i + ", this.value)'></input>"
 				+ "<br/>"
 				+ "<div class='singleface'>"
-					+ "<img src='img/face-3.png' class='face' id='cartoonface-" + i + "'>"
+					+ "<img src='img/face-" + i + ".png' class='face' id='cartoonface-" + i + "'>"
 				+ "</div>"
 				+ "<div class='single-pot-container'>"
 					+ "<span class='currency-symbol-split-unevenly'>" + currencySymbol + "</span><span id='remaining-pot-" + i + "'>" + peoplePricesPotArr[i-1] + "</span>"
@@ -2644,7 +2649,7 @@ function loadItems(){
 
 
 //--From HOMEPAGE == GO TO == VIEW PREVIOUS BILLS
-$(document).delegate('#goto-view-previous-bill', 'click' ,function(){
+$(document).delegate('#goto-view-previous-bill', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-view-previous-bill.html', function(){
 		// Change Body CSS to White
 		$("body").css('background-color', '#ffffff');
@@ -2654,14 +2659,14 @@ $(document).delegate('#goto-view-previous-bill', 'click' ,function(){
 
 
 //--From VIEW PREVIOUS BILLS == GO TO == PREVIOUS BILL SUMMARY (1)
-$(document).delegate('#goto-previous-bill-summary-1', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-summary-1', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-summary-1.html', function(){
 
 	});
 });
 
 //--From VIEW PREVIOUS BILLS == GO TO == PREVIOUS BILL SUMMARY (2)
-$(document).delegate('#goto-previous-bill-summary-2', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-summary-2', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-summary-2.html', function(){
 
 	});
@@ -2671,21 +2676,21 @@ $(document).delegate('#goto-previous-bill-summary-2', 'click' ,function(){
 
 
 //--From PREVIOUS BILL SUMMARY (1) == GO TO == PREVIOUS BILL DETAILED (1)
-$(document).delegate('#goto-previous-bill-detailed-1-1', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-1-1', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-1-1.html', function(){
 
 	});
 });
 
 //--From PREVIOUS BILL SUMMARY (1) == GO TO == PREVIOUS BILL DETAILED (2)
-$(document).delegate('#goto-previous-bill-detailed-1-2', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-1-2', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-1-2.html', function(){
 
 	});
 });
 
 //--From PREVIOUS BILL SUMMARY (1) == GO TO == PREVIOUS BILL DETAILED (3)
-$(document).delegate('#goto-previous-bill-detailed-1-3', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-1-3', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-1-3.html', function(){
 
 	});
@@ -2694,28 +2699,28 @@ $(document).delegate('#goto-previous-bill-detailed-1-3', 'click' ,function(){
 
 
 //--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-1)
-$(document).delegate('#goto-previous-bill-detailed-2-1', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-2-1', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-1.html', function(){
 
 	});
 });
 
 //--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-2)
-$(document).delegate('#goto-previous-bill-detailed-2-2', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-2-2', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-2.html', function(){
 
 	});
 });
 
 //--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-3)
-$(document).delegate('#goto-previous-bill-detailed-2-3', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-2-3', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-3.html', function(){
 
 	});
 });
 
 //--From PREVIOUS BILL SUMMARY (2) == GO TO == PREVIOUS BILL DETAILED (2-3)
-$(document).delegate('#goto-previous-bill-detailed-2-4', 'click' ,function(){
+$(document).delegate('#goto-previous-bill-detailed-2-4', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-detailed-2-4.html', function(){
 
 	});
@@ -2726,14 +2731,14 @@ $(document).delegate('#goto-previous-bill-detailed-2-4', 'click' ,function(){
 
 
 //--From PREVIOUS BILL SUMMARY (1) == BACKTO == VIEW PREVIOUS BILLS
-$(document).delegate('#backto-view-previous-bill', 'click' ,function(){
+$(document).delegate('#backto-view-previous-bill', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-view-previous-bill.html', function(){
 
 	});
 });
 
 //--From DETAILED SUMMARY (1) == BACKTO == PREVIOUS BILL SUMMARY (1)
-$(document).delegate('#backto-previous-bill-summary-1', 'click' ,function(){
+$(document).delegate('#backto-previous-bill-summary-1', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-summary-1.html', function(){
 		
 	});
@@ -2741,7 +2746,7 @@ $(document).delegate('#backto-previous-bill-summary-1', 'click' ,function(){
 
 
 //--From DETAILED SUMMARY (2) == BACKTO == PREVIOUS BILL SUMMARY (2)
-$(document).delegate('#backto-previous-bill-summary-2', 'click' ,function(){
+$(document).delegate('#backto-previous-bill-summary-2', 'touchstart' ,function(){
 	$('.non-js-wrapper').load('pb-previous-bill-summary-2.html', function(){
 		
 	});

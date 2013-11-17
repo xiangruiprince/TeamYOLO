@@ -34,53 +34,14 @@
     </head>
     
     <body>
-        <!-- Main App Views -->    
-        <div class="non-js-wrapper"></div>
-        
-        <!-- MODAL BOX for HELP-->
-        <div class="modal hide" id="myModal">
-            <div id="myCarousel" class="carousel slide">
-              <ol class="carousel-indicators">
-                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-              </ol>
-              <!-- Carousel items -->
-              <div class="carousel-inner">
-                <div class="active item">
-                    <div class="help-cross clickable-pointer" onclick="">
-                        <img src="img/help-cross.png">
-                    </div>
-                    <img src="img/help-page-1.png">
-                </div>
-                <div class="item">
-                    <div class="help-cross clickable-pointer" onclick="">
-                        <img src="img/help-cross.png">
-                    </div>
-                    <img src="img/help-page-2.png">
-                </div>
-              </div>
-              <!-- Carousel nav -->
-              <a class="carousel-control left clickable-pointer" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-              <a class="carousel-control right clickable-pointer" href="#myCarousel" data-slide="next">&rsaquo;</a>
-            </div>
-        </div>
-    </body>
 
-    <!-- Javascript -->
+      <!-- ClickTale Top part -->
+        <script type="text/javascript">
+        var WRInitTime=(new Date()).getTime();
+        </script>
+      <!-- ClickTale end of Top part -->
 
-    <script type="text/javascript" src="phonegap.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script>
-    <script type="text/javascript" src="js/bootstrap-carousel.js"></script> 
-    <script type="text/javascript" src="js/jquery.preload.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
-
-
-    <script>
+       <script>
         // ----------------
         // PRELOADER
         // ----------------
@@ -123,4 +84,87 @@
         );
 
     </script>
+
+    
+
+
+        <!-- Main App Views -->    
+        <div class="non-js-wrapper"></div>
+        
+        <!-- MODAL BOX for HELP-->
+        <div class="modal hide" id="myModal">
+            <div id="myCarousel" class="carousel slide">
+              <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+              </ol>
+              <!-- Carousel items -->
+              <div class="carousel-inner">
+                <div class="active item">
+                    <div class="help-cross clickable-pointer" onclick="">
+                        <img src="img/help-cross.png">
+                    </div>
+                    <img src="img/help-page-1.png">
+                </div>
+                <div class="item">
+                    <div class="help-cross clickable-pointer" onclick="">
+                        <img src="img/help-cross.png">
+                    </div>
+                    <img src="img/help-page-2.png">
+                </div>
+              </div>
+              <!-- Carousel nav -->
+              <a class="carousel-control left clickable-pointer" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+              <a class="carousel-control right clickable-pointer" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            </div>
+        </div>
+
+        <!-- ClickTale Bottom part -->
+
+        <script type='text/javascript'>
+        // The ClickTale Balkan Tracking Code may be programmatically customized using hooks:
+        // 
+        //   function ClickTalePreRecordingHook() { /* place your customized code here */  }
+        //
+        // For details about ClickTale hooks, please consult the wiki page http://wiki.clicktale.com/Article/Customizing_code_version_2
+
+        document.write(unescape("%3Cscript%20src='"+
+        (document.location.protocol=='https:'?
+        "https://clicktalecdn.sslcs.cdngc.net/www07/ptc/f517aa54-da55-4809-9964-ca541ed5cdb3.js":
+        "http://cdn.clicktale.net/www07/ptc/f517aa54-da55-4809-9964-ca541ed5cdb3.js")+"'%20type='text/javascript'%3E%3C/script%3E"));
+        </script>
+
+        <!-- ClickTale end of Bottom part -->
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-45260802-1', 'jeremyzhong.com');
+          ga('send', 'pageview');
+
+        </script>
+
+
+
+    </body>
+
+
+    <!-- Javascript -->
+
+    <script type="text/javascript" src="phonegap.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/fastclick.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script type="text/javascript" src="js/bootstrap-carousel.js"></script> 
+    <script type="text/javascript" src="js/jquery.preload.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+
+
 </html>
